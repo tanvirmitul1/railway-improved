@@ -1,16 +1,20 @@
 "use client"
 
+import { useIsMobile } from "@/hooks/useIsMobile"
+
 interface NavbarProps {
   serverMsg: string
 }
 
 export function Navbar({ serverMsg }: NavbarProps) {
+  const isMobile = useIsMobile()
+
   return (
     <nav
       style={{
         background: "linear-gradient(90deg, #003d2e 0%, #006a4e 100%)",
-        padding: "0 1.5rem",
-        height: 56,
+        padding: isMobile ? "0 0.75rem" : "0 1.5rem",
+        height: isMobile ? 50 : 56,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -21,22 +25,24 @@ export function Navbar({ serverMsg }: NavbarProps) {
         boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-        <span style={{ fontSize: "1.6rem" }}>🚂</span>
+      <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+        <span style={{ fontSize: isMobile ? "1.3rem" : "1.6rem" }}>🚂</span>
         <div>
           <div
             style={{
               fontWeight: 900,
-              fontSize: "1rem",
+              fontSize: isMobile ? "0.85rem" : "1rem",
               color: "#fff",
               letterSpacing: 0.5,
             }}
           >
             বাংলাদেশ রেলওয়ে
           </div>
-          <div style={{ fontSize: "0.6rem", color: "#86efac" }}>
-            নতুন রূপে — IE ছাড়াই চলে!
-          </div>
+          {!isMobile && (
+            <div style={{ fontSize: "0.6rem", color: "#86efac" }}>
+              নতুন রূপে — IE ছাড়াই চলে!
+            </div>
+          )}
         </div>
       </div>
 
@@ -45,7 +51,7 @@ export function Navbar({ serverMsg }: NavbarProps) {
           background: "rgba(0,0,0,0.3)",
           border: "1px solid rgba(134,239,172,0.3)",
           borderRadius: 20,
-          padding: "0.3rem 0.8rem",
+          padding: "0.3rem 0.7rem",
           fontSize: "0.65rem",
           color: "#86efac",
           display: "flex",
@@ -60,10 +66,15 @@ export function Navbar({ serverMsg }: NavbarProps) {
             background: "#22c55e",
             borderRadius: "50%",
             display: "inline-block",
+            flexShrink: 0,
             boxShadow: "0 0 6px #22c55e",
           }}
         />
-        {serverMsg}
+        {isMobile ? (
+          <span style={{ whiteSpace: "nowrap" }}>Online ✅</span>
+        ) : (
+          <span>{serverMsg}</span>
+        )}
       </div>
     </nav>
   )

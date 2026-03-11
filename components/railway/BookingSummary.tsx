@@ -13,6 +13,7 @@ interface BookingSummaryProps {
   selectedSeat: string | null
   price: number
   name: string
+  isMobile?: boolean
   otp: string
   paying: boolean
   onPay: () => void
@@ -29,6 +30,7 @@ export function BookingSummary({
   name,
   otp,
   paying,
+  isMobile = false,
   onPay,
 }: BookingSummaryProps) {
   const summaryRows: [string, string | undefined][] = [
@@ -48,8 +50,8 @@ export function BookingSummary({
         border: "1px solid rgba(0,106,78,0.3)",
         borderRadius: 14,
         padding: "1.25rem",
-        position: "sticky",
-        top: 80,
+        position: isMobile ? "static" : "sticky",
+        top: isMobile ? undefined : 80,
       }}
     >
       <div

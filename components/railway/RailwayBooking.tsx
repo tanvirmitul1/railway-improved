@@ -2,6 +2,7 @@
 
 import { useMemo } from "react"
 import { useRailwayBooking } from "@/hooks/useRailwayBooking"
+import { useIsMobile } from "@/hooks/useIsMobile"
 import { getRandomServerMessage } from "@/lib/railway"
 import { BOOKING_STEPS } from "@/constants/railway"
 import { Navbar } from "./Navbar"
@@ -18,9 +19,8 @@ import { SuccessStep } from "./steps/SuccessStep"
  * in the hook, keeping this component purely declarative.
  */
 export function RailwayBooking() {
-  // Stable random message — re-computed only once per mount
   const serverMsg = useMemo(() => getRandomServerMessage(), [])
-
+  const isMobile = useIsMobile()
   const booking = useRailwayBooking()
 
   return (
@@ -36,7 +36,7 @@ export function RailwayBooking() {
       <Navbar serverMsg={serverMsg} />
       <ProgressBar steps={BOOKING_STEPS} currentStep={booking.step} />
 
-      <div style={{ maxWidth: 780, margin: "0 auto", padding: "2rem 1.5rem" }}>
+      <div style={{ maxWidth: 780, margin: "0 auto", padding: isMobile ? "1.25rem 0.75rem" : "2rem 1.5rem" }}>
         {booking.step === 0 && (
           <SearchStep
             from={booking.from}

@@ -2,6 +2,7 @@
 
 import type { Train, SeatClassKey } from "@/types/railway"
 import { inputStyle, labelStyle, cardStyle, btnBack } from "@/lib/styles"
+import { useIsMobile } from "@/hooks/useIsMobile"
 import { BookingSummary } from "../BookingSummary"
 import { PaymentMethods } from "../PaymentMethods"
 
@@ -48,6 +49,7 @@ export function PassengerStep({
   onPay,
   onBack,
 }: PassengerStepProps) {
+  const isMobile = useIsMobile()
   const canSendOtp = phone.length >= 11 && otpTimer === 0
 
   return (
@@ -60,7 +62,7 @@ export function PassengerStep({
           marginBottom: "1.25rem",
         }}
       >
-        <h2 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 900 }}>
+        <h2 style={{ margin: 0, fontSize: isMobile ? "0.95rem" : "1.05rem", fontWeight: 900 }}>
           তথ্য দিন ও পেমেন্ট করুন
         </h2>
         <button onClick={onBack} style={btnBack}>
@@ -68,16 +70,16 @@ export function PassengerStep({
         </button>
       </div>
 
+      {/* Single column on mobile, two columns on desktop */}
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
           gap: "1.25rem",
         }}
       >
-        {/* Left column: form */}
+        {/* Form column */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-          {/* Passenger info */}
           <div style={cardStyle}>
             <div
               style={{
@@ -130,15 +132,8 @@ export function PassengerStep({
                 </button>
               </div>
               {otpTimer > 0 && (
-                <div
-                  style={{
-                    fontSize: "0.65rem",
-                    color: "#fbbf24",
-                    marginTop: "0.3rem",
-                  }}
-                >
-                  ✅ OTP পাঠানো হয়েছে! {otpTimer} সেকেন্ডে আসবেই — এটা নতুন
-                  সিস্টেম 😌
+                <div style={{ fontSize: "0.65rem", color: "#fbbf24", marginTop: "0.3rem" }}>
+                  ✅ OTP পাঠানো হয়েছে! {otpTimer} সেকেন্ডে আসবেই — এটা নতুন সিস্টেম 😌
                 </div>
               )}
             </div>
@@ -160,7 +155,7 @@ export function PassengerStep({
           <PaymentMethods />
         </div>
 
-        {/* Right column: summary */}
+        {/* Summary column — appears below form on mobile */}
         <BookingSummary
           train={selectedTrain}
           from={from}
@@ -172,6 +167,7 @@ export function PassengerStep({
           name={name}
           otp={otp}
           paying={paying}
+          isMobile={isMobile}
           onPay={onPay}
         />
       </div>

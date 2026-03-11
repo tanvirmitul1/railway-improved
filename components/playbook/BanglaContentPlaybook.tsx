@@ -1,6 +1,7 @@
 "use client"
 
 import { usePlaybook } from "@/hooks/usePlaybook"
+import { useIsMobile } from "@/hooks/useIsMobile"
 import { EPISODES, CONTENT_STRATEGY } from "@/constants/playbook"
 import { PlaybookHeader } from "./PlaybookHeader"
 import { EpisodeSidebar } from "./EpisodeSidebar"
@@ -20,6 +21,7 @@ import { TipsTab } from "./tabs/TipsTab"
 export function BanglaContentPlaybook() {
   const { selected, tab, setTab, goTo, goNext, goPrev, episode, totalEpisodes, isFirst, isLast } =
     usePlaybook()
+  const isMobile = useIsMobile()
 
   return (
     <div
@@ -36,10 +38,10 @@ export function BanglaContentPlaybook() {
         style={{
           maxWidth: 950,
           margin: "0 auto",
-          padding: "1.5rem",
+          padding: isMobile ? "1rem 0.75rem" : "1.5rem",
           display: "flex",
-          gap: "1.5rem",
-          flexWrap: "wrap",
+          flexDirection: isMobile ? "column" : "row",
+          gap: isMobile ? "1rem" : "1.5rem",
         }}
       >
         <EpisodeSidebar

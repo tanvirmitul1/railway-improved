@@ -1,6 +1,7 @@
 "use client"
 
 import type { ContentStrategy } from "@/types/playbook"
+import { useIsMobile } from "@/hooks/useIsMobile"
 
 interface ContentStrategySectionProps {
   strategies: ContentStrategy[]
@@ -9,12 +10,14 @@ interface ContentStrategySectionProps {
 export function ContentStrategySection({
   strategies,
 }: ContentStrategySectionProps) {
+  const isMobile = useIsMobile()
+
   return (
     <div
       style={{
         maxWidth: 950,
         margin: "0 auto",
-        padding: "0 1.5rem 2.5rem",
+        padding: isMobile ? "0 0.75rem 2rem" : "0 1.5rem 2.5rem",
       }}
     >
       <div
@@ -38,7 +41,7 @@ export function ContentStrategySection({
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+            gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(260px, 1fr))",
             gap: "0.75rem",
           }}
         >

@@ -1,17 +1,22 @@
 "use client"
 
+import { useIsMobile } from "@/hooks/useIsMobile"
+
 interface ProgressBarProps {
   steps: string[]
   currentStep: number
 }
 
 export function ProgressBar({ steps, currentStep }: ProgressBarProps) {
+  const isMobile = useIsMobile()
+  const circleSize = isMobile ? 22 : 28
+
   return (
     <div
       style={{
         background: "#0d1a14",
         borderBottom: "1px solid rgba(255,255,255,0.06)",
-        padding: "0.6rem 1.5rem",
+        padding: isMobile ? "0.5rem 0.75rem" : "0.6rem 1.5rem",
       }}
     >
       <div
@@ -42,8 +47,8 @@ export function ProgressBar({ steps, currentStep }: ProgressBarProps) {
             >
               <div
                 style={{
-                  width: 28,
-                  height: 28,
+                  width: circleSize,
+                  height: circleSize,
                   borderRadius: "50%",
                   background:
                     i < currentStep
@@ -58,9 +63,10 @@ export function ProgressBar({ steps, currentStep }: ProgressBarProps) {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontSize: "0.7rem",
+                  fontSize: isMobile ? "0.6rem" : "0.7rem",
                   fontWeight: 900,
                   color: "#fff",
+                  flexShrink: 0,
                   boxShadow:
                     i === currentStep
                       ? "0 0 12px rgba(244,42,65,0.5)"
@@ -70,20 +76,24 @@ export function ProgressBar({ steps, currentStep }: ProgressBarProps) {
               >
                 {i < currentStep ? "✓" : i + 1}
               </div>
-              <span
-                style={{
-                  fontSize: "0.55rem",
-                  color:
-                    i === currentStep
-                      ? "#f42a41"
-                      : i < currentStep
-                        ? "#86efac"
-                        : "#475569",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {label}
-              </span>
+
+              {/* Hide labels on mobile to prevent overflow */}
+              {!isMobile && (
+                <span
+                  style={{
+                    fontSize: "0.55rem",
+                    color:
+                      i === currentStep
+                        ? "#f42a41"
+                        : i < currentStep
+                          ? "#86efac"
+                          : "#475569",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {label}
+                </span>
+              )}
             </div>
 
             {i < steps.length - 1 && (
@@ -93,8 +103,8 @@ export function ProgressBar({ steps, currentStep }: ProgressBarProps) {
                   height: 2,
                   background:
                     i < currentStep ? "#006a4e" : "rgba(255,255,255,0.08)",
-                  margin: "0 4px",
-                  marginBottom: 16,
+                  margin: "0 3px",
+                  marginBottom: isMobile ? 0 : 16,
                   transition: "background 0.3s",
                 }}
               />

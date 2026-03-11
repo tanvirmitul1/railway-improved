@@ -3,6 +3,7 @@
 import type { Train, SeatClassKey } from "@/types/railway"
 import { getSeatClassLabel } from "@/lib/railway"
 import { btnPrimary } from "@/lib/styles"
+import { useIsMobile } from "@/hooks/useIsMobile"
 
 interface SuccessStepProps {
   selectedTrain: Train
@@ -25,8 +26,10 @@ export function SuccessStep({
   confetti,
   onReset,
 }: SuccessStepProps) {
+  const isMobile = useIsMobile()
+
   return (
-    <div style={{ textAlign: "center", padding: "2rem 0" }}>
+    <div style={{ textAlign: "center", padding: isMobile ? "1rem 0" : "2rem 0" }}>
       <div
         style={{
           fontSize: "4rem",
@@ -64,7 +67,7 @@ export function SuccessStep({
           border: "2px solid rgba(0,106,78,0.5)",
           borderRadius: 20,
           padding: "2rem",
-          maxWidth: 420,
+          maxWidth: isMobile ? "100%" : 420,
           margin: "0 auto 2rem",
           position: "relative",
           overflow: "hidden",
