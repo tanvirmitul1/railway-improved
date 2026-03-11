@@ -1,9 +1,7 @@
 "use client"
 
-import { useMemo } from "react"
 import { useRailwayBooking } from "@/hooks/useRailwayBooking"
 import { useIsMobile } from "@/hooks/useIsMobile"
-import { getRandomServerMessage } from "@/lib/railway"
 import { BOOKING_STEPS } from "@/constants/railway"
 import { Navbar } from "./Navbar"
 import { ProgressBar } from "./ProgressBar"
@@ -19,7 +17,6 @@ import { SuccessStep } from "./steps/SuccessStep"
  * in the hook, keeping this component purely declarative.
  */
 export function RailwayBooking() {
-  const serverMsg = useMemo(() => getRandomServerMessage(), [])
   const isMobile = useIsMobile()
   const booking = useRailwayBooking()
 
@@ -33,7 +30,7 @@ export function RailwayBooking() {
         color: "#f0f0f0",
       }}
     >
-      <Navbar serverMsg={serverMsg} />
+      <Navbar />
       <ProgressBar steps={BOOKING_STEPS} currentStep={booking.step} />
 
       <div style={{ maxWidth: 780, margin: "0 auto", padding: isMobile ? "1.25rem 0.75rem" : "2rem 1.5rem" }}>
@@ -69,6 +66,7 @@ export function RailwayBooking() {
             selectedSeat={booking.selectedSeat}
             price={booking.price}
             onSeatSelect={booking.setSelectedSeat}
+            onBrokerSelect={booking.handleBrokerSelect}
             onBack={() => booking.setStep(1)}
             onNext={() => booking.setStep(3)}
           />
@@ -88,11 +86,15 @@ export function RailwayBooking() {
             otp={booking.otp}
             otpSent={booking.otpSent}
             otpTimer={booking.otpTimer}
+            otpAutoFilled={booking.otpAutoFilled}
+            brokerMode={booking.brokerMode}
+            selectedPayment={booking.selectedPayment}
             paying={booking.paying}
             onNameChange={booking.setName}
             onPhoneChange={booking.setPhone}
             onOtpChange={booking.setOtp}
             onSendOtp={booking.handleSendOtp}
+            onPaymentSelect={booking.setSelectedPayment}
             onPay={booking.handlePay}
             onBack={() => booking.setStep(2)}
           />

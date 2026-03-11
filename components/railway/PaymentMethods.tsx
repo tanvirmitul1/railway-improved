@@ -1,10 +1,14 @@
 "use client"
 
 import { PAYMENT_METHODS } from "@/constants/railway"
-import { sectionLabelStyle } from "@/lib/styles"
-import { cardStyle } from "@/lib/styles"
+import { sectionLabelStyle, cardStyle } from "@/lib/styles"
 
-export function PaymentMethods() {
+interface PaymentMethodsProps {
+  selected: string | null
+  onSelect: (label: string) => void
+}
+
+export function PaymentMethods({ selected, onSelect }: PaymentMethodsProps) {
   return (
     <div style={cardStyle}>
       <div style={sectionLabelStyle}>💳 পেমেন্ট পদ্ধতি</div>
@@ -15,37 +19,69 @@ export function PaymentMethods() {
           gap: "0.5rem",
         }}
       >
-        {PAYMENT_METHODS.map((m, i) => (
-          <button
-            key={m.label}
-            style={{
-              padding: "0.6rem",
-              borderRadius: 8,
-              border:
-                i === 1
-                  ? "1.5px solid rgba(244,42,65,0.5)"
+        {PAYMENT_METHODS.map((m) => {
+          const isSelected = selected === m.label
+          return (
+            <button
+              key={m.label}
+              onClick={() => onSelect(m.label)}
+              style={{
+                padding: "0.65rem 0.5rem",
+                borderRadius: 8,
+                border: isSelected
+                  ? "2px solid #22c55e"
                   : "1px solid rgba(255,255,255,0.08)",
-              background:
-                i === 1 ? "rgba(244,42,65,0.1)" : "rgba(255,255,255,0.04)",
-              color: "#fff",
-              cursor: "pointer",
-              fontSize: "0.75rem",
-              fontWeight: i === 1 ? 700 : 400,
-            }}
-          >
-            {m.icon} {m.label}
-          </button>
-        ))}
+                background: isSelected
+                  ? "rgba(34,197,94,0.15)"
+                  : "rgba(255,255,255,0.04)",
+                color: isSelected ? "#86efac" : "#94a3b8",
+                cursor: "pointer",
+                fontSize: "0.75rem",
+                fontWeight: isSelected ? 800 : 400,
+                textAlign: "left",
+                transition: "all 0.2s",
+              }}
+            >
+              <div>
+                {m.icon} {m.label}{" "}
+                {isSelected && <span style={{ float: "right" }}>✅</span>}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.58rem",
+                  marginTop: 2,
+                  color: isSelected ? "#86efac" : "#475569",
+                }}
+              >
+                {m.funny}
+              </div>
+            </button>
+          )
+        })}
       </div>
-      <div
-        style={{
-          marginTop: "0.6rem",
-          fontSize: "0.62rem",
-          color: "#475569",
-        }}
-      >
-        পেমেন্ট fail হলে টাকা ৫ মিনিটে ফেরত। কোনো "contact support" নেই।
-      </div>
+      {selected ? (
+        <div
+          style={{
+            marginTop: "0.6rem",
+            fontSize: "0.65rem",
+            color: "#86efac",
+            fontWeight: 700,
+            textAlign: "center",
+          }}
+        >
+          ✅ {selected} সিলেক্ট হয়েছে — পেমেন্ট রেডি! এখন শুধু "পরিশোধ" চাপুন।
+        </div>
+      ) : (
+        <div
+          style={{
+            marginTop: "0.6rem",
+            fontSize: "0.62rem",
+            color: "#475569",
+          }}
+        >
+          👆 একটা সিলেক্ট করুন — আসল সাইটে এটাও crash করত
+        </div>
+      )}
     </div>
   )
 }

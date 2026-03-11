@@ -19,11 +19,15 @@ interface PassengerStepProps {
   otp: string
   otpSent: boolean
   otpTimer: number
+  otpAutoFilled: boolean
+  brokerMode: boolean
+  selectedPayment: string | null
   paying: boolean
   onNameChange: (val: string) => void
   onPhoneChange: (val: string) => void
   onOtpChange: (val: string) => void
   onSendOtp: () => void
+  onPaymentSelect: (label: string) => void
   onPay: () => void
   onBack: () => void
 }
@@ -41,11 +45,15 @@ export function PassengerStep({
   otp,
   otpSent,
   otpTimer,
+  otpAutoFilled,
+  brokerMode,
+  selectedPayment,
   paying,
   onNameChange,
   onPhoneChange,
   onOtpChange,
   onSendOtp,
+  onPaymentSelect,
   onPay,
   onBack,
 }: PassengerStepProps) {
@@ -62,9 +70,16 @@ export function PassengerStep({
           marginBottom: "1.25rem",
         }}
       >
-        <h2 style={{ margin: 0, fontSize: isMobile ? "0.95rem" : "1.05rem", fontWeight: 900 }}>
-          তথ্য দিন ও পেমেন্ট করুন
-        </h2>
+        <div>
+          <h2 style={{ margin: 0, fontSize: isMobile ? "0.95rem" : "1.05rem", fontWeight: 900 }}>
+            {brokerMode ? "🕵️ দালাল মোড — তথ্য দিন" : "তথ্য দিন ও পেমেন্ট করুন"}
+          </h2>
+          <div style={{ fontSize: "0.65rem", color: "#64748b", marginTop: 2 }}>
+            {brokerMode
+              ? "আপনি নিজ ইচ্ছায় ২× দাম দিচ্ছেন। আমরা বিচার করছি না। 😶"
+              : "নাম + OTP + পেমেন্ট — তিনটাই লাগবে। আসল সাইটে ৭টা লাগত।"}
+          </div>
+        </div>
         <button onClick={onBack} style={btnBack}>
           ← ফিরুন
         </button>
@@ -94,7 +109,7 @@ export function PassengerStep({
             </div>
 
             <div style={{ marginBottom: "0.85rem" }}>
-              <label style={labelStyle}>নাম</label>
+              <label style={labelStyle}>নাম (আসল নাম — ভুয়া দিলে ধরা পড়বেন)</label>
               <input
                 value={name}
                 onChange={(e) => onNameChange(e.target.value)}
@@ -104,7 +119,7 @@ export function PassengerStep({
             </div>
 
             <div>
-              <label style={labelStyle}>মোবাইল নম্বর</label>
+              <label style={labelStyle}>মোবাইল নম্বর (OTP যাবে — ৫ সেকেন্ডে!)</label>
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <input
                   value={phone}
@@ -128,31 +143,54 @@ export function PassengerStep({
                     flexShrink: 0,
                   }}
                 >
-                  {otpTimer > 0 ? `${otpTimer}s` : "OTP পাঠান"}
+                  {otpTimer > 0 ? `⏱ ${otpTimer}s` : "OTP পাঠান"}
                 </button>
               </div>
+
               {otpTimer > 0 && (
                 <div style={{ fontSize: "0.65rem", color: "#fbbf24", marginTop: "0.3rem" }}>
-                  ✅ OTP পাঠানো হয়েছে! {otpTimer} সেকেন্ডে আসবেই — এটা নতুন সিস্টেম 😌
+                  ⚡ OTP পাঠানো হয়েছে! {otpTimer} সেকেন্ডে আসবে — আসল সাইটে ৫ মিনিট লাগত।
                 </div>
               )}
             </div>
 
             {otpSent && (
               <div style={{ marginTop: "0.85rem" }}>
-                <label style={labelStyle}>OTP কোড</label>
+                <label style={labelStyle}>
+                  OTP কোড{otpAutoFilled ? " (আমরা বসিয়ে দিলাম 😅)" : ""}
+                </label>
                 <input
                   value={otp}
                   onChange={(e) => onOtpChange(e.target.value)}
                   placeholder="6 সংখ্যার কোড"
                   maxLength={6}
-                  style={inputStyle}
+                  style={{
+                    ...inputStyle,
+                    borderColor: otpAutoFilled ? "rgba(251,191,36,0.5)" : undefined,
+                    color: otpAutoFilled ? "#fbbf24" : undefined,
+                  }}
                 />
+                {otpAutoFilled && (
+                  <div
+                    style={{
+                      fontSize: "0.62rem",
+                      color: "#fbbf24",
+                      marginTop: "0.3rem",
+                      background: "rgba(251,191,36,0.08)",
+                      border: "1px solid rgba(251,191,36,0.2)",
+                      borderRadius: 6,
+                      padding: "0.3rem 0.5rem",
+                    }}
+                  >
+                    🤖 OTP আসেনি? সমস্যা নেই — আমরা <strong>123456</strong> বসিয়ে দিলাম।{" "}
+                    আসল সাইটে আপনি বসে বসে কাঁদতেন। 😌
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          <PaymentMethods />
+          <PaymentMethods selected={selectedPayment} onSelect={onPaymentSelect} />
         </div>
 
         {/* Summary column — appears below form on mobile */}
@@ -166,6 +204,8 @@ export function PassengerStep({
           price={price}
           name={name}
           otp={otp}
+          selectedPayment={selectedPayment}
+          brokerMode={brokerMode}
           paying={paying}
           isMobile={isMobile}
           onPay={onPay}

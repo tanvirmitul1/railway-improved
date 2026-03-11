@@ -1,13 +1,20 @@
 "use client"
 
+import { useState, useEffect } from "react"
+import { FUNNY_SERVER_MESSAGES } from "@/constants/railway"
 import { useIsMobile } from "@/hooks/useIsMobile"
 
-interface NavbarProps {
-  serverMsg: string
-}
-
-export function Navbar({ serverMsg }: NavbarProps) {
+export function Navbar() {
   const isMobile = useIsMobile()
+  const [msgIdx, setMsgIdx] = useState(0)
+
+  useEffect(() => {
+    const id = setInterval(
+      () => setMsgIdx((i) => (i + 1) % FUNNY_SERVER_MESSAGES.length),
+      4000,
+    )
+    return () => clearInterval(id)
+  }, [])
 
   return (
     <nav
@@ -40,7 +47,7 @@ export function Navbar({ serverMsg }: NavbarProps) {
           </div>
           {!isMobile && (
             <div style={{ fontSize: "0.6rem", color: "#86efac" }}>
-              নতুন রূপে — IE ছাড়াই চলে!
+              নতুন রূপে — IE ছাড়া, ধৈর্য ছাড়া, দালাল ছাড়া!
             </div>
           )}
         </div>
@@ -57,6 +64,8 @@ export function Navbar({ serverMsg }: NavbarProps) {
           display: "flex",
           alignItems: "center",
           gap: "0.4rem",
+          maxWidth: isMobile ? 120 : 320,
+          overflow: "hidden",
         }}
       >
         <span
@@ -68,12 +77,17 @@ export function Navbar({ serverMsg }: NavbarProps) {
             display: "inline-block",
             flexShrink: 0,
             boxShadow: "0 0 6px #22c55e",
+            animation: "pulse 2s infinite",
           }}
         />
         {isMobile ? (
-          <span style={{ whiteSpace: "nowrap" }}>Online ✅</span>
+          <span style={{ whiteSpace: "nowrap" }}>সার্ভার চালু ✅</span>
         ) : (
-          <span>{serverMsg}</span>
+          <span
+            style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
+          >
+            {FUNNY_SERVER_MESSAGES[msgIdx]}
+          </span>
         )}
       </div>
     </nav>

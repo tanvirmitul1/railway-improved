@@ -3,6 +3,7 @@
 import { STATIONS, QUICK_ROUTES } from "@/constants/railway"
 import { inputStyle, labelStyle, btnPrimary } from "@/lib/styles"
 import { useIsMobile } from "@/hooks/useIsMobile"
+import { ComparisonTable } from "../ComparisonTable"
 
 interface SearchStepProps {
   from: string
@@ -44,7 +45,7 @@ export function SearchStep({
           ট্রেনের টিকেট কাটুন 🎫
         </h1>
         <p style={{ color: "#64748b", fontSize: isMobile ? "0.78rem" : "0.85rem", margin: 0 }}>
-          আগের মতো ৪৫ মিনিট না — এখন ৪৫ সেকেন্ডে হবে। দেখুন।
+          ক্যাপচা নেই। IE নেই। ৪৫ মিনিটের অপেক্ষা নেই। এটা ২০২৫ সাল, বস।
         </p>
       </div>
 
@@ -61,7 +62,7 @@ export function SearchStep({
         {isMobile ? (
           <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem", marginBottom: "1.25rem" }}>
             <div>
-              <label style={labelStyle}>🚉 কোথা থেকে</label>
+              <label style={labelStyle}>🚉 কোথা থেকে পালাচ্ছেন?</label>
               <select value={from} onChange={(e) => onFromChange(e.target.value)} style={inputStyle}>
                 {STATIONS.map((s) => (
                   <option key={s} value={s} style={{ background: "#1a2e24" }}>{s}</option>
@@ -87,7 +88,7 @@ export function SearchStep({
               </button>
             </div>
             <div>
-              <label style={labelStyle}>🏁 কোথায়</label>
+              <label style={labelStyle}>🏁 কোথায় যাচ্ছেন?</label>
               <select value={to} onChange={(e) => onToChange(e.target.value)} style={inputStyle}>
                 {STATIONS.map((s) => (
                   <option key={s} value={s} style={{ background: "#1a2e24" }}>{s}</option>
@@ -98,7 +99,7 @@ export function SearchStep({
         ) : (
           <div style={{ display: "flex", gap: "1rem", alignItems: "flex-end", marginBottom: "1.25rem" }}>
             <div style={{ flex: 1 }}>
-              <label style={labelStyle}>🚉 কোথা থেকে</label>
+              <label style={labelStyle}>🚉 কোথা থেকে পালাচ্ছেন?</label>
               <select value={from} onChange={(e) => onFromChange(e.target.value)} style={inputStyle}>
                 {STATIONS.map((s) => (
                   <option key={s} value={s} style={{ background: "#1a2e24" }}>{s}</option>
@@ -124,7 +125,7 @@ export function SearchStep({
               ⇄
             </button>
             <div style={{ flex: 1 }}>
-              <label style={labelStyle}>🏁 কোথায়</label>
+              <label style={labelStyle}>🏁 কোথায় যাচ্ছেন?</label>
               <select value={to} onChange={(e) => onToChange(e.target.value)} style={inputStyle}>
                 {STATIONS.map((s) => (
                   <option key={s} value={s} style={{ background: "#1a2e24" }}>{s}</option>
@@ -136,7 +137,7 @@ export function SearchStep({
 
         {/* Date */}
         <div style={{ marginBottom: "1.5rem" }}>
-          <label style={labelStyle}>📅 তারিখ</label>
+          <label style={labelStyle}>📅 কবে যাবেন? (ট্রেন থাকলে)</label>
           <input
             type="date"
             value={date}
@@ -157,7 +158,7 @@ export function SearchStep({
               color: "#fca5a5",
             }}
           >
-            😅 একই জায়গা থেকে একই জায়গায় যাওয়া যায় না। জীবনেও না, ট্রেনেও না।
+            😅 একই জায়গা থেকে একই জায়গায়? জীবনেও ঘুরে আসছেন? ট্রেন যাবে না ভাই।
           </div>
         )}
 
@@ -182,12 +183,13 @@ export function SearchStep({
               খোঁজা হচ্ছে... (সার্ভার ডাউন নেই আজ!)
             </>
           ) : (
-            "🔍 ট্রেন খুঁজুন"
+            "🔍 ট্রেন খুঁজুন — সার্ভার আছে, ভয় নেই"
           )}
         </button>
 
         {/* Quick routes */}
         <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "0.6rem", color: "#475569", alignSelf: "center" }}>জনপ্রিয়:</span>
           {QUICK_ROUTES.map(([f, t]) => (
             <button
               key={f + t}
@@ -208,32 +210,7 @@ export function SearchStep({
         </div>
       </div>
 
-      {/* Fun fact */}
-      <div
-        style={{
-          marginTop: "1.25rem",
-          background: "rgba(244,42,65,0.06)",
-          border: "1px solid rgba(244,42,65,0.15)",
-          borderRadius: 12,
-          padding: "0.85rem 1rem",
-          display: "flex",
-          gap: "0.65rem",
-          alignItems: "flex-start",
-        }}
-      >
-        <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>📊</span>
-        <div>
-          <div style={{ fontSize: "0.72rem", color: "#f42a41", fontWeight: 700, marginBottom: "0.2rem" }}>
-            আসল সাইটের সাথে তুলনা
-          </div>
-          <div style={{ fontSize: isMobile ? "0.7rem" : "0.75rem", color: "#94a3b8", lineHeight: 1.6 }}>
-            আসল railway.gov.bd তে টিকেট কাটতে গড়ে লাগে{" "}
-            <strong style={{ color: "#fbbf24" }}>৪৫+ মিনিট</strong> (সার্ভার ডাউন ছাড়া)। এই
-            ডিজাইনে: <strong style={{ color: "#86efac" }}>৪৫ সেকেন্ড</strong>। ব্যবধান: ৬০ গুণ।
-            গণিত মিথ্যা বলে না। 💀
-          </div>
-        </div>
-      </div>
+      <ComparisonTable />
     </div>
   )
 }

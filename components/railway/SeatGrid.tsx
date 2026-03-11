@@ -8,9 +8,10 @@ interface SeatGridProps {
   seats: SeatRow[]
   selectedSeat: string | null
   onSeatSelect: (id: string | null) => void
+  onBrokerSeatClick?: (id: string) => void
 }
 
-export function SeatGrid({ seats, selectedSeat, onSeatSelect }: SeatGridProps) {
+export function SeatGrid({ seats, selectedSeat, onSeatSelect, onBrokerSeatClick }: SeatGridProps) {
   const isMobile = useIsMobile()
 
   return (
@@ -84,26 +85,27 @@ export function SeatGrid({ seats, selectedSeat, onSeatSelect }: SeatGridProps) {
                 </span>
                 {row.map((seat, si) => {
                   const isSelected = selectedSeat === seat.id
+                  const isBroker = seat.status === "broker"
                   const bg = isSelected
                     ? "#1d4ed8"
-                    : seat.status === "available"
-                      ? "rgba(0,106,78,0.25)"
-                      : seat.status === "broker"
-                        ? "rgba(245,158,11,0.2)"
+                    : isBroker
+                      ? "rgba(245,158,11,0.2)"
+                      : seat.status === "available"
+                        ? "rgba(0,106,78,0.25)"
                         : "rgba(244,42,65,0.15)"
                   const border = isSelected
                     ? "2px solid #3b82f6"
-                    : seat.status === "available"
-                      ? "1.5px solid rgba(0,106,78,0.5)"
-                      : seat.status === "broker"
-                        ? "1.5px solid rgba(245,158,11,0.4)"
+                    : isBroker
+                      ? "1.5px solid rgba(245,158,11,0.6)"
+                      : seat.status === "available"
+                        ? "1.5px solid rgba(0,106,78,0.5)"
                         : "1.5px solid rgba(244,42,65,0.3)"
                   const textColor = isSelected
                     ? "#fff"
-                    : seat.status === "available"
-                      ? "#86efac"
-                      : seat.status === "broker"
-                        ? "#fbbf24"
+                    : isBroker
+                      ? "#fbbf24"
+                      : seat.status === "available"
+                        ? "#86efac"
                         : "#f87171"
 
                   return (
@@ -111,11 +113,17 @@ export function SeatGrid({ seats, selectedSeat, onSeatSelect }: SeatGridProps) {
                       {si === 2 && <div key="aisle" style={{ width: 18 }} />}
                       <button
                         key={seat.id}
-                        disabled={seat.status !== "available"}
-                        onClick={() => onSeatSelect(isSelected ? null : seat.id)}
+                        disabled={seat.status === "taken"}
+                        onClick={() => {
+                          if (isBroker) {
+                            onBrokerSeatClick?.(seat.id)
+                          } else {
+                            onSeatSelect(isSelected ? null : seat.id)
+                          }
+                        }}
                         title={
-                          seat.status === "broker"
-                            ? "সন্দেহজনক বুকিং — ডিটেক্টর কাজ করছে"
+                          isBroker
+                            ? "দালালের আসন — ক্লিক করে বিস্তারিত দেখুন"
                             : seat.id
                         }
                         style={{
@@ -124,14 +132,15 @@ export function SeatGrid({ seats, selectedSeat, onSeatSelect }: SeatGridProps) {
                           borderRadius: 6,
                           border,
                           background: bg,
-                          cursor: seat.status === "available" ? "pointer" : "not-allowed",
+                          cursor: seat.status === "taken" ? "not-allowed" : "pointer",
                           fontSize: "0.5rem",
                           color: textColor,
                           fontWeight: 700,
                           transition: "all 0.15s",
+                          animation: isBroker ? "pulse 2s infinite" : "none",
                         }}
                       >
-                        {seat.status === "broker" ? "🕵️" : seat.id}
+                        {isBroker ? "🕵️" : seat.id}
                       </button>
                     </>
                   )

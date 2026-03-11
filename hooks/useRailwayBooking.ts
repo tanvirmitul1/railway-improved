@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import type { Train, SeatClassKey, SeatRow } from "@/types/railway"
 import { generateSeats } from "@/lib/railway"
 import { useOtpTimer } from "./useOtpTimer"
@@ -18,13 +18,29 @@ export function useRailwayBooking() {
   const [selectedClass, setSelectedClass] = useState<SeatClassKey | null>(null)
   const [seats, setSeats] = useState<SeatRow[]>([])
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null)
+  const [brokerMode, setBrokerMode] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
+  const [otpAutoFilled, setOtpAutoFilled] = useState(false)
   const { otpTimer, startTimer } = useOtpTimer()
   const [otp, setOtp] = useState("")
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
+  const [selectedPayment, setSelectedPayment] = useState<string | null>(null)
   const [paying, setPaying] = useState(false)
   const [confetti, setConfetti] = useState(false)
+  const autoFilledRef = useRef(false)
+
+  /** Auto-fill OTP after 5s countdown expires — funnier than waiting forever */
+  useEffect(() => {
+    if (otpSent && otpTimer === 0 && !autoFilledRef.current && otp === "") {
+      autoFilledRef.current = true
+      const t = setTimeout(() => {
+        setOtp("123456")
+        setOtpAutoFilled(true)
+      }, 600)
+      return () => clearTimeout(t)
+    }
+  }, [otpSent, otpTimer, otp])
 
   const handleSearch = () => {
     if (from === to) return
@@ -40,12 +56,23 @@ export function useRailwayBooking() {
     setSelectedClass(cls)
     setSeats(generateSeats())
     setSelectedSeat(null)
+    setBrokerMode(false)
     setStep(2)
   }
 
+  /** User chose to buy from a broker — seat is pre-selected at 2× price */
+  const handleBrokerSelect = (seatId: string) => {
+    setSelectedSeat(seatId)
+    setBrokerMode(true)
+    setStep(3)
+  }
+
   const handleSendOtp = () => {
+    autoFilledRef.current = false
+    setOtpAutoFilled(false)
+    setOtp("")
     setOtpSent(true)
-    startTimer(30)
+    startTimer(5)
   }
 
   const handlePay = () => {
@@ -67,15 +94,21 @@ export function useRailwayBooking() {
     setSelectedTrain(null)
     setSelectedClass(null)
     setSelectedSeat(null)
+    setBrokerMode(false)
     setOtpSent(false)
+    setOtpAutoFilled(false)
     setOtp("")
     setName("")
     setPhone("")
+    setSelectedPayment(null)
     setConfetti(false)
+    autoFilledRef.current = false
   }
 
-  const price =
+  const basePrice =
     selectedTrain && selectedClass ? selectedTrain.price[selectedClass] : 0
+  /** Broker mode charges 2× the original price — সেবার মূল্য 😏 */
+  const price = brokerMode ? basePrice * 2 : basePrice
 
   return {
     // navigation
@@ -95,9 +128,11 @@ export function useRailwayBooking() {
     seats,
     selectedSeat,
     setSelectedSeat,
+    brokerMode,
     // passenger / otp
     otpSent,
     otpTimer,
+    otpAutoFilled,
     otp,
     setOtp,
     name,
@@ -105,12 +140,15 @@ export function useRailwayBooking() {
     phone,
     setPhone,
     // payment
+    selectedPayment,
+    setSelectedPayment,
     paying,
     confetti,
     price,
     // actions
     handleSearch,
     handleSelectTrain,
+    handleBrokerSelect,
     handleSendOtp,
     handlePay,
     swap,

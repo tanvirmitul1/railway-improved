@@ -36,7 +36,7 @@ export function TrainListStep({
             {from} → {to}
           </h2>
           <div style={{ fontSize: "0.72rem", color: "#64748b" }}>
-            {date} • {TRAINS.length}টি ট্রেন পাওয়া গেছে (দালাল বাদে)
+            {date} • {TRAINS.length}টি ট্রেন পাওয়া গেছে (সার্ভার ডাউন ছাড়াই!) 🎉
           </div>
         </div>
         <button onClick={onBack} style={btnBack}>
@@ -50,6 +50,22 @@ export function TrainListStep({
         {TRAINS.map((train) => (
           <TrainCard key={train.id} train={train} onSelect={onSelectTrain} />
         ))}
+      </div>
+
+      {/* Sarcastic footnote */}
+      <div
+        style={{
+          marginTop: "1rem",
+          padding: "0.65rem 1rem",
+          background: "rgba(255,255,255,0.02)",
+          border: "1px solid rgba(255,255,255,0.06)",
+          borderRadius: 10,
+          fontSize: "0.62rem",
+          color: "#374151",
+          textAlign: "center",
+        }}
+      >
+        আসল সাইটে এখন সার্ভার ডাউন থাকত। এখানে নেই। আপনি ভাগ্যবান। 🙏
       </div>
     </div>
   )

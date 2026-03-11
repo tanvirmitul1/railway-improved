@@ -15,6 +15,8 @@ interface BookingSummaryProps {
   name: string
   isMobile?: boolean
   otp: string
+  selectedPayment: string | null
+  brokerMode?: boolean
   paying: boolean
   onPay: () => void
 }
@@ -29,10 +31,15 @@ export function BookingSummary({
   price,
   name,
   otp,
+  selectedPayment,
+  brokerMode = false,
   paying,
   isMobile = false,
   onPay,
 }: BookingSummaryProps) {
+  const basePrice = brokerMode ? Math.round(price / 2) : price
+  const canPay = !!name && !!otp && !!selectedPayment
+
   const summaryRows: [string, string | undefined][] = [
     ["ট্রেন", train.name],
     ["রুট", `${from} → ${to}`],
@@ -46,8 +53,12 @@ export function BookingSummary({
     <div
       style={{
         background:
-          "linear-gradient(135deg, rgba(0,106,78,0.2), rgba(0,40,30,0.4))",
-        border: "1px solid rgba(0,106,78,0.3)",
+          brokerMode
+            ? "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(120,60,0,0.3))"
+            : "linear-gradient(135deg, rgba(0,106,78,0.2), rgba(0,40,30,0.4))",
+        border: brokerMode
+          ? "1px solid rgba(245,158,11,0.4)"
+          : "1px solid rgba(0,106,78,0.3)",
         borderRadius: 14,
         padding: "1.25rem",
         position: isMobile ? "static" : "sticky",
@@ -57,14 +68,31 @@ export function BookingSummary({
       <div
         style={{
           fontSize: "0.7rem",
-          color: "#86efac",
+          color: brokerMode ? "#fbbf24" : "#86efac",
           fontWeight: 700,
           marginBottom: "1rem",
           letterSpacing: 1,
         }}
       >
-        🎫 বুকিং সারাংশ
+        {brokerMode ? "🕵️ দালাল মোড বুকিং" : "🎫 বুকিং সারাংশ"}
       </div>
+
+      {brokerMode && (
+        <div
+          style={{
+            background: "rgba(245,158,11,0.12)",
+            border: "1px solid rgba(245,158,11,0.3)",
+            borderRadius: 8,
+            padding: "0.5rem 0.75rem",
+            marginBottom: "0.85rem",
+            fontSize: "0.65rem",
+            color: "#fbbf24",
+          }}
+        >
+          🕵️ আপনি স্বেচ্ছায় দালালের কাছ থেকে কিনছেন। দাম ২ গুণ।{" "}
+          <strong>এটা আমরা সাপোর্ট করি না, কিন্তু বাস্তবতা অস্বীকার করি না।</strong> 😐
+        </div>
+      )}
 
       {summaryRows.map(([k, v]) => (
         <div
@@ -88,6 +116,21 @@ export function BookingSummary({
           paddingTop: "0.75rem",
         }}
       >
+        {brokerMode && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "0.35rem",
+              fontSize: "0.78rem",
+            }}
+          >
+            <span style={{ color: "#64748b" }}>আসল মূল্য</span>
+            <span style={{ textDecoration: "line-through", color: "#64748b" }}>
+              ৳{basePrice}
+            </span>
+          </div>
+        )}
         <div
           style={{
             display: "flex",
@@ -96,8 +139,10 @@ export function BookingSummary({
             fontSize: "0.78rem",
           }}
         >
-          <span style={{ color: "#64748b" }}>টিকেট মূল্য</span>
-          <span>৳{price}</span>
+          <span style={{ color: "#64748b" }}>
+            {brokerMode ? "দালাল চার্জ 🕵️" : "টিকেট মূল্য"}
+          </span>
+          <span style={{ color: brokerMode ? "#fbbf24" : undefined }}>৳{price}</span>
         </div>
         <div
           style={{
@@ -120,17 +165,22 @@ export function BookingSummary({
           }}
         >
           <span>মোট</span>
-          <span style={{ color: "#86efac" }}>৳{price}</span>
+          <span style={{ color: brokerMode ? "#fbbf24" : "#86efac" }}>৳{price}</span>
         </div>
       </div>
 
       <button
         onClick={onPay}
-        disabled={!name || !otp || paying}
+        disabled={!canPay || paying}
         style={{
           ...btnPrimary,
           marginTop: "1.25rem",
-          opacity: !name || !otp ? 0.5 : 1,
+          background: canPay
+            ? brokerMode
+              ? "linear-gradient(135deg, #b45309, #d97706)"
+              : "linear-gradient(135deg, #006a4e, #009966)"
+            : undefined,
+          opacity: canPay ? 1 : 0.45,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -139,20 +189,25 @@ export function BookingSummary({
       >
         {paying ? (
           <>
-            <span
-              style={{
-                display: "inline-block",
-                animation: "spin 0.8s linear infinite",
-              }}
-            >
+            <span style={{ display: "inline-block", animation: "spin 0.8s linear infinite" }}>
               ⏳
             </span>{" "}
             পেমেন্ট হচ্ছে...
           </>
+        ) : canPay ? (
+          `${brokerMode ? "🕵️" : "💳"} ৳${price} পরিশোধ করুন`
         ) : (
-          `💳 ৳${price} পরিশোধ করুন`
+          "⬆ উপরের তথ্য পূরণ করুন"
         )}
       </button>
+
+      {!canPay && (
+        <div style={{ marginTop: "0.5rem", fontSize: "0.6rem", color: "#475569", textAlign: "center" }}>
+          {!name && "নাম দিন • "}
+          {!otp && "OTP দিন • "}
+          {!selectedPayment && "পেমেন্ট বেছে নিন"}
+        </div>
+      )}
 
       <div
         style={{
