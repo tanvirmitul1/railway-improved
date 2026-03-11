@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700;800&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -126,3 +127,17 @@
     @apply font-sans;
     }
 }
+
+/* ─── Shared animations used across railway & playbook pages ─── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
+/* ─── Shared element resets ─── */
+select option { background: #1a2e24; }
+input::placeholder { color: #374151; }
+button:hover:not(:disabled) { filter: brightness(1.1); }
