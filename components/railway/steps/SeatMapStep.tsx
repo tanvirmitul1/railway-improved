@@ -30,9 +30,23 @@ export function SeatMapStep({
   onNext,
 }: SeatMapStepProps) {
   const [brokerSeatId, setBrokerSeatId] = useState<string | null>(null)
+  const [trollMsg, setTrollMsg] = useState<string | null>(null)
 
-  const handleBrokerClick = (id: string) => {
-    setBrokerSeatId(id === brokerSeatId ? null : id)
+  const TROLL_MSGS = [
+    "মন্ত্রী মহোদয়ের পিএস এইমাত্র সিটটি নিয়ে নিলেন! 😤",
+    "কোটা বরাদ্দ হয়ে গেছে। সিটটি আর নেই। 🪑💨",
+    "দালাল সিস্টেম রিফ্রেশ হচ্ছে... সিট উধাও! 🕵️",
+  ]
+
+  const handleSeatSelectWithTroll = (id: string | null) => {
+    onSeatSelect(id)
+    if (id && Math.random() < 0.35) {
+      const msg = TROLL_MSGS[Math.floor(Math.random() * TROLL_MSGS.length)]
+      setTrollMsg(msg)
+      setTimeout(() => setTrollMsg(null), 3000)
+    } else {
+      setTrollMsg(null)
+    }
   }
 
   return (
@@ -47,11 +61,14 @@ export function SeatMapStep({
       >
         <div>
           <h2 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 900 }}>
-            আসন বেছে নিন 💺
+            আসন বেছে নিন 💺 (যদি পান)
           </h2>
           <div style={{ fontSize: "0.7rem", color: "#64748b" }}>
             {selectedTrain.name} • {getSeatClassLabel(selectedClass)} •{" "}
-            <span style={{ color: "#fbbf24" }}>🕵️ গুলো দালালের — ক্লিক করলে অপশন আছে</span>
+            <span style={{ color: "#fbbf24" }}>🕵️ গুলো দালালের — ক্লিক করলেই অপশন পাবেন</span>
+          </div>
+          <div style={{ fontSize: "0.62rem", color: "#f87171", marginTop: 2 }}>
+            ⚠️ সিটে ক্লিক করুন — তবে উধাও হলে আমরা দায়ী না!
           </div>
         </div>
         <button onClick={onBack} style={btnBack}>
@@ -62,9 +79,27 @@ export function SeatMapStep({
       <SeatGrid
         seats={seats}
         selectedSeat={selectedSeat}
-        onSeatSelect={onSeatSelect}
-        onBrokerSeatClick={handleBrokerClick}
+        onSeatSelect={handleSeatSelectWithTroll}
+        onBrokerSeatClick={(id) => setBrokerSeatId(id === brokerSeatId ? null : id)}
       />
+
+      {/* Troll popup */}
+      {trollMsg && (
+        <div
+          style={{
+            marginTop: "0.75rem",
+            background: "rgba(244,42,65,0.12)",
+            border: "1px solid rgba(244,42,65,0.4)",
+            borderRadius: 10,
+            padding: "0.6rem 1rem",
+            fontSize: "0.75rem",
+            color: "#fca5a5",
+            animation: "fadeSlideUp 0.3s ease-out",
+          }}
+        >
+          😱 {trollMsg}
+        </div>
+      )}
 
       {/* Broker seat popup */}
       {brokerSeatId && (

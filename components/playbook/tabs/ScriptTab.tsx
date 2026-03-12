@@ -7,27 +7,10 @@ interface ScriptTabProps {
 export function ScriptTab({ script }: ScriptTabProps) {
   return (
     <div>
-      <div
-        style={{
-          fontSize: "0.62rem",
-          color: "#fbbf24",
-          fontWeight: 700,
-          letterSpacing: 2,
-          marginBottom: "0.75rem",
-        }}
-      >
+      <div className="mb-3 text-[0.62rem] font-bold tracking-[2px] text-amber-600 dark:text-amber-400">
         🎬 বাংলা স্ক্রিপ্ট
       </div>
-      <pre
-        style={{
-          margin: 0,
-          whiteSpace: "pre-wrap",
-          fontSize: "0.78rem",
-          lineHeight: 1.9,
-          color: "#e2e8f0",
-          fontFamily: "'Segoe UI', sans-serif",
-        }}
-      >
+      <pre className="m-0 whitespace-pre-wrap font-sans text-[0.78rem] leading-[1.9] text-slate-800 dark:text-slate-200">
         {script}
       </pre>
     </div>

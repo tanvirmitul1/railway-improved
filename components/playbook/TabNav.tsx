@@ -1,6 +1,7 @@
 "use client"
 
 import type { TabKey } from "@/types/playbook"
+import { cn } from "@/lib/utils"
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "roast", label: "🔥 রোস্ট পয়েন্ট" },
@@ -16,29 +17,17 @@ interface TabNavProps {
 
 export function TabNav({ activeTab, onTabChange }: TabNavProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: "0.4rem",
-        marginBottom: "1rem",
-        flexWrap: "wrap",
-      }}
-    >
+    <div className="mb-4 flex flex-wrap gap-[0.4rem]">
       {TABS.map((t) => (
         <button
           key={t.key}
           onClick={() => onTabChange(t.key)}
-          style={{
-            padding: "0.4rem 0.85rem",
-            borderRadius: 20,
-            border: "none",
-            cursor: "pointer",
-            fontSize: "0.7rem",
-            fontWeight: 700,
-            background: activeTab === t.key ? "#f42a41" : "rgba(255,255,255,0.07)",
-            color: activeTab === t.key ? "#fff" : "#64748b",
-            transition: "all 0.2s",
-          }}
+          className={cn(
+            "cursor-pointer rounded-full px-[0.85rem] py-[0.4rem] text-[0.7rem] font-bold transition-all duration-200",
+            activeTab === t.key
+              ? "bg-[#f42a41] text-white"
+              : "bg-white/5 text-slate-500 hover:bg-white/10 dark:bg-card/50 dark:text-slate-400 dark:hover:bg-card/80"
+          )}
         >
           {t.label}
         </button>

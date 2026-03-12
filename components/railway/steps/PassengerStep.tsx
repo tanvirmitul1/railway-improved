@@ -76,8 +76,8 @@ export function PassengerStep({
           </h2>
           <div style={{ fontSize: "0.65rem", color: "#64748b", marginTop: 2 }}>
             {brokerMode
-              ? "আপনি নিজ ইচ্ছায় ২× দাম দিচ্ছেন। আমরা বিচার করছি না। 😶"
-              : "নাম + OTP + পেমেন্ট — তিনটাই লাগবে। আসল সাইটে ৭টা লাগত।"}
+              ? "আপনি নিজ ইচ্ছায় ২× দাম দিচ্ছেন। আমরা বিচার করছি না। 😶 (না দিলেও আমরা বিচার করতাম না)।"
+              : "নাম + OTP + পেমেন্ট — তিনটাই লাগবে। আসল সাইটে ৭টা লাগত দিন।"}
           </div>
         </div>
         <button onClick={onBack} style={btnBack}>
@@ -109,11 +109,11 @@ export function PassengerStep({
             </div>
 
             <div style={{ marginBottom: "0.85rem" }}>
-              <label style={labelStyle}>নাম (আসল নাম — ভুয়া দিলে ধরা পড়বেন)</label>
+              <label style={labelStyle}>নাম (আসল নাম — মন্ত্রীর নাম দিলে তার সিট পাবেন)</label>
               <input
                 value={name}
                 onChange={(e) => onNameChange(e.target.value)}
-                placeholder="আপনার পুরো নাম"
+                placeholder="আপনার পুরো নাম (দালাল নাম চলবে না)"
                 style={inputStyle}
               />
             </div>
@@ -149,7 +149,7 @@ export function PassengerStep({
 
               {otpTimer > 0 && (
                 <div style={{ fontSize: "0.65rem", color: "#fbbf24", marginTop: "0.3rem" }}>
-                  ⚡ OTP পাঠানো হয়েছে! {otpTimer} সেকেন্ডে আসবে — আসল সাইটে ৫ মিনিট লাগত।
+                  ⭐ OTP পাঠানো হয়েছে! বাংলাদেশ ডাকবিভাগের মাধ্যমে {otpTimer} কর্মদিবসের মধ্যে প্রদান করা হবে। (OTP আসবে {otpTimer}s পরে)
                 </div>
               )}
             </div>
@@ -182,8 +182,8 @@ export function PassengerStep({
                       padding: "0.3rem 0.5rem",
                     }}
                   >
-                    🤖 OTP আসেনি? সমস্যা নেই — আমরা <strong>123456</strong> বসিয়ে দিলাম।{" "}
-                    আসল সাইটে আপনি বসে বসে কাঁদতেন। 😌
+                    🤖 OTP আসেনি? সমস্যা নেই — আমরা <strong>123456</strong> বসিয়ে দিলাম।{" "}
+                    আসল সাইটে আপনি বসে বসে কাঁদতেন। 😭
                   </div>
                 )}
               </div>

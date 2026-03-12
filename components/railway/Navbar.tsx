@@ -43,11 +43,11 @@ export function Navbar() {
               letterSpacing: 0.5,
             }}
           >
-            বাংলাদেশ রেলওয়ে
+            বাংলাদেশ রেলওয়ে™
           </div>
           {!isMobile && (
             <div style={{ fontSize: "0.6rem", color: "#86efac" }}>
-              নতুন রূপে — IE ছাড়া, ধৈর্য ছাড়া, দালাল ছাড়া!
+              গন্তব্যে পৌঁছানোর গ্যারান্টি নেই, কিন্তু সার্ভার চালু আছে!
             </div>
           )}
         </div>
@@ -81,7 +81,7 @@ export function Navbar() {
           }}
         />
         {isMobile ? (
-          <span style={{ whiteSpace: "nowrap" }}>সার্ভার চালু ✅</span>
+          <span style={{ whiteSpace: "nowrap" }}>সার্ভার চালু (এখনো) ✅</span>
         ) : (
           <span
             style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}

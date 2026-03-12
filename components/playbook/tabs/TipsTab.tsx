@@ -11,57 +11,24 @@ const DEFAULT_VIDEO_FORMAT =
 export function TipsTab({ contentTips, videoFormat }: TipsTabProps) {
   return (
     <div>
-      <div
-        style={{
-          fontSize: "0.62rem",
-          color: "#a78bfa",
-          fontWeight: 700,
-          letterSpacing: 2,
-          marginBottom: "0.75rem",
-        }}
-      >
+      <div className="mb-3 text-[0.62rem] font-bold tracking-[2px] text-purple-600 dark:text-purple-400">
         💡 কন্টেন্ট কৌশল
       </div>
 
       {contentTips.map((tip, i) => (
-        <div
-          key={i}
-          style={{
-            display: "flex",
-            gap: "0.75rem",
-            marginBottom: "0.65rem",
-            alignItems: "flex-start",
-          }}
-        >
-          <span style={{ color: "#a78bfa", flexShrink: 0 }}>▸</span>
-          <span
-            style={{ fontSize: "0.82rem", color: "#cbd5e1", lineHeight: 1.6 }}
-          >
+        <div key={i} className="mb-[0.65rem] flex items-start gap-3">
+          <span className="shrink-0 text-purple-600 dark:text-purple-400">▸</span>
+          <span className="text-[0.82rem] leading-[1.6] text-muted-foreground">
             {tip}
           </span>
         </div>
       ))}
 
-      <div
-        style={{
-          marginTop: "1rem",
-          padding: "0.75rem",
-          background: "rgba(167,139,250,0.1)",
-          border: "1px solid rgba(167,139,250,0.2)",
-          borderRadius: 8,
-        }}
-      >
-        <div
-          style={{
-            fontSize: "0.65rem",
-            color: "#a78bfa",
-            fontWeight: 700,
-            marginBottom: "0.3rem",
-          }}
-        >
+      <div className="mt-4 rounded-lg border border-purple-400/20 bg-purple-400/10 p-3 dark:bg-purple-400/5">
+        <div className="mb-1 text-[0.65rem] font-bold text-purple-700 dark:text-purple-400">
           📱 ভিডিও ফরম্যাট
         </div>
-        <div style={{ fontSize: "0.75rem", color: "#c4b5fd" }}>
+        <div className="text-[0.75rem] text-purple-800 dark:text-purple-300">
           {videoFormat ?? DEFAULT_VIDEO_FORMAT}
         </div>
       </div>

@@ -28,11 +28,11 @@ export function BrokerDetectorBadge() {
       <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>🕵️</span>
       <div style={{ flex: 1 }}>
         <div style={{ fontSize: "0.72rem", color: "#86efac", fontWeight: 700 }}>
-          দালাল ডিটেক্টর সক্রিয় আছে
+          🕵️ দালাল ডিটেক্টর সক্রিয় আছে
         </div>
         <div style={{ fontSize: "0.62rem", color: "#475569", marginTop: 2 }}>
-          আজ <strong style={{ color: "#fbbf24" }}>{blocked}টি</strong> সন্দেহজনক bulk-booking ব্লক হয়েছে।
-          🟡 আসন গুলো দালালের হলেও ক্লিক করলে অপশন দেখাবে।
+          আজ <strong style={{ color: "#fbbf24" }}>{blocked}টি</strong> সন্দেহজনক bulk-booking ব্লক হয়েছে।{" "}
+          <span style={{ color: "#f87171" }}>তবে ডিটেক্টর নিজেই দালালদের সাথে চা খাচ্ছে বলে সন্দেহ। 😐</span>
         </div>
       </div>
       <div

@@ -24,48 +24,23 @@ export function BanglaContentPlaybook() {
   const isMobile = useIsMobile()
 
   return (
-    <div
-      style={{
-        fontFamily: "'Segoe UI', 'SolaimanLipi', sans-serif",
-        background: "#0d0d0d",
-        minHeight: "100vh",
-        color: "#f0f0f0",
-      }}
-    >
+    <div className="min-h-screen bg-background text-foreground font-sans">
       <PlaybookHeader />
 
-      <div
-        style={{
-          maxWidth: 950,
-          margin: "0 auto",
-          padding: isMobile ? "1rem 0.75rem" : "1.5rem",
-          display: "flex",
-          flexDirection: isMobile ? "column" : "row",
-          gap: isMobile ? "1rem" : "1.5rem",
-        }}
-      >
+      <div className="mx-auto flex max-w-[950px] flex-col gap-4 p-3 md:flex-row md:gap-6 md:p-6">
         <EpisodeSidebar
           episodes={EPISODES}
           selected={selected}
           onSelect={(i) => goTo(i)}
         />
 
-        {/* Main content */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="min-w-0 flex-1">
           <EpisodeHeader episode={episode} />
 
           <TabNav activeTab={tab} onTabChange={setTab} />
 
           {/* Tab content panel */}
-          <div
-            style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: 12,
-              padding: "1.25rem",
-              minHeight: 300,
-            }}
-          >
+          <div className="min-h-[300px] rounded-xl border border-border bg-card/30 p-5">
             {tab === "roast" && (
               <RoastTab roastPoints={episode.roastPoints} />
             )}

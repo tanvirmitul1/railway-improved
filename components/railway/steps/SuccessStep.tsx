@@ -47,17 +47,31 @@ export function SuccessStep({
           margin: "0 0 0.5rem",
         }}
       >
-        টিকেট পেয়েছেন!
+        🤯 ভাই, টিকেট পেয়েছেন!!
       </h1>
       <p
         style={{
           color: "#64748b",
           fontSize: "0.85rem",
-          marginBottom: "2rem",
+          marginBottom: "1rem",
         }}
       >
-        টাকাও গেছে, টিকেটও পেয়েছেন! এটা অলৌকিক না — এটা ভালো ডিজাইন। 😌
+        টাকাও গেছে, টিকেটও পেয়েছেন! তবে...
       </p>
+      <div
+        style={{
+          background: "rgba(244,42,65,0.1)",
+          border: "1px solid rgba(244,42,65,0.3)",
+          borderRadius: 10,
+          padding: "0.65rem 1rem",
+          marginBottom: "1.5rem",
+          fontSize: "0.78rem",
+          color: "#fca5a5",
+          lineHeight: 1.6,
+        }}
+      >
+        ⚠️ <strong>গুরুত্বপূর্ণ শর্ত:</strong> আপনার সিটে অন্য কেউ বসে থাকলে আমাদের কিছুই করার নেই। সেটা বাস্তবতা।
+      </div>
 
       {/* Ticket card */}
       <div
@@ -174,7 +188,7 @@ export function SuccessStep({
             marginTop: "0.25rem",
           }}
         >
-          QR Code • SMS-ও গেছে
+          QR Code • SMS-ও গেছে (মনে হয়)
         </div>
       </div>
 
@@ -238,8 +252,11 @@ export function SuccessStep({
       >
         ⏱️ এই বুকিং এ সময় লেগেছে{" "}
         <strong style={{ color: "#fbbf24" }}>~৪৫ সেকেন্ড</strong>। আসল
-        railway.gov.bd তে গড়ে লাগে{" "}
+        railway.gov.bd তে গড়ে লাগে{" "}
         <strong style={{ color: "#f87171" }}>৪৫+ মিনিট</strong>।<br />
+        <span style={{ color: "#f87171", fontWeight: 700 }}>
+          সাবধান! ট্রেনে উঠলে আপনার সিটে অন্য কেউ বসে থাকলে ভদ্রভাবে বলুন: "ভাই, এটা আমার সিট।"
+        </span><br />
         <span style={{ color: "#64748b" }}>
           এই ভিডিওটা শেয়ার করুন — হয়তো কেউ দেখবে যে বদলাতে পারে। 🙏
         </span>

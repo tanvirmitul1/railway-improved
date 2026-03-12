@@ -1,54 +1,38 @@
 "use client"
 
-import { useIsMobile } from "@/hooks/useIsMobile"
+import { useTheme } from "next-themes"
+import { Moon, Sun } from "lucide-react"
 
 export function PlaybookHeader() {
-  const isMobile = useIsMobile()
+  const { theme, setTheme } = useTheme()
 
   return (
-    <div
-      style={{
-        background:
-          "linear-gradient(135deg, #006a4e 0%, #003d2e 60%, #000 100%)",
-        padding: isMobile ? "1rem 0.75rem" : "1.5rem 2rem",
-        borderBottom: "3px solid #f42a41",
-      }}
-    >
-      <div style={{ maxWidth: 950, margin: "0 auto" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: isMobile ? "0.75rem" : "1rem" }}>
-          <div
-            style={{
-              width: isMobile ? 38 : 48,
-              height: isMobile ? 38 : 48,
-              borderRadius: "50%",
-              background: "#f42a41",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: isMobile ? "1.1rem" : "1.4rem",
-              flexShrink: 0,
-            }}
-          >
+    <div className="border-b-[3px] border-[#f42a41] bg-gradient-to-br from-[#006a4e] via-[#003d2e] to-black px-3 py-4 md:px-8 md:py-6">
+      <div className="mx-auto flex max-w-[950px] items-center justify-between">
+        <div className="flex items-center gap-3 md:gap-4">
+          <div className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full bg-[#f42a41] text-[1.1rem] md:h-[48px] md:w-[48px] md:text-[1.4rem]">
             🎬
           </div>
           <div>
-            <h1
-              style={{
-                margin: 0,
-                fontSize: isMobile ? "1.05rem" : "1.3rem",
-                color: "#fff",
-                fontWeight: 900,
-                letterSpacing: 1,
-              }}
-            >
+            <h1 className="m-0 tracking-[1px] text-[1.05rem] font-black text-white md:text-[1.3rem]">
               UI রোস্ট বাংলাদেশ 🇧🇩
             </h1>
-            <p style={{ margin: 0, color: "#86efac", fontSize: isMobile ? "0.65rem" : "0.75rem" }}>
+            <p className="m-0 text-[0.65rem] text-[#86efac] md:text-[0.75rem]">
               বাংলায় Roast &amp; Redesign — বাংলাদেশের বিখ্যাত সাইটগুলোর UI
               ভাঙা ও গড়া
             </p>
           </div>
         </div>
+        
+        <button
+          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          className="flex h-9 w-9 items-center justify-center rounded-md border border-white/20 bg-white/10 text-white transition-colors hover:bg-white/20"
+          aria-label="Toggle theme"
+        >
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </button>
       </div>
     </div>
   )

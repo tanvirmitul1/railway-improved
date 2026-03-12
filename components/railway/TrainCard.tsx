@@ -10,11 +10,11 @@ interface TrainCardProps {
 
 export function TrainCard({ train, onSelect }: TrainCardProps) {
   const statusColor =
-    train.status === "চলছে"
-      ? { bg: "rgba(234,179,8,0.2)", text: "#fbbf24" }
-      : train.status === "সময়মতো"
-        ? { bg: "rgba(34,197,94,0.2)", text: "#86efac" }
-        : { bg: "rgba(99,102,241,0.2)", text: "#a5b4fc" }
+    train.status.includes("সময়মতো")
+      ? { bg: "rgba(34,197,94,0.2)", text: "#86efac" }
+      : train.status.includes("রাতের")
+        ? { bg: "rgba(99,102,241,0.2)", text: "#a5b4fc" }
+        : { bg: "rgba(244,42,65,0.2)", text: "#f87171" }
 
   return (
     <div
@@ -104,10 +104,10 @@ export function TrainCard({ train, onSelect }: TrainCardProps) {
               ? "#fbbf24"
               : "#86efac"
           const availLabel = isFull
-            ? "নেই 💀"
+            ? "নেই 💨 দালাল নিয়েছে"
             : avail <= 3
-              ? `শেষ ${avail}টি! 🔥`
-              : `${avail}টি আছে`
+              ? `শেষ ${avail}টি! 🔥 দাড়ান শিঘগির!`
+              : `${avail}টি আছে (এখনো)`
 
           return (
             <button

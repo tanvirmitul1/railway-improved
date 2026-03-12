@@ -1,7 +1,6 @@
 "use client"
 
 import type { ContentStrategy } from "@/types/playbook"
-import { useIsMobile } from "@/hooks/useIsMobile"
 
 interface ContentStrategySectionProps {
   strategies: ContentStrategy[]
@@ -10,71 +9,25 @@ interface ContentStrategySectionProps {
 export function ContentStrategySection({
   strategies,
 }: ContentStrategySectionProps) {
-  const isMobile = useIsMobile()
-
   return (
-    <div
-      style={{
-        maxWidth: 950,
-        margin: "0 auto",
-        padding: isMobile ? "0 0.75rem 2rem" : "0 1.5rem 2.5rem",
-      }}
-    >
-      <div
-        style={{
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-          paddingTop: "1.5rem",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "0.62rem",
-            color: "#f42a41",
-            fontWeight: 700,
-            letterSpacing: 2,
-            marginBottom: "1rem",
-            textTransform: "uppercase",
-          }}
-        >
+    <div className="mx-auto max-w-[950px] px-3 pb-8 md:px-6 md:pb-10">
+      <div className="border-t border-border pt-6">
+        <div className="mb-4 text-[0.62rem] font-bold uppercase tracking-[2px] text-[#f42a41] dark:text-red-500">
           🚀 সিরিজ কৌশল — কীভাবে বড় হবেন
         </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: "0.75rem",
-          }}
-        >
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-[repeat(auto-fill,minmax(260px,1fr))]">
           {strategies.map((s, i) => (
             <div
               key={i}
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.07)",
-                borderRadius: 10,
-                padding: "0.85rem",
-              }}
+              className="rounded-[10px] border border-border bg-card/40 p-[0.85rem]"
             >
-              <div style={{ fontSize: "1.3rem", marginBottom: "0.3rem" }}>
+              <div className="mb-[0.3rem] text-[1.3rem]">
                 {s.icon}
               </div>
-              <div
-                style={{
-                  fontSize: "0.75rem",
-                  color: "#f1f5f9",
-                  fontWeight: 700,
-                  marginBottom: "0.25rem",
-                }}
-              >
+              <div className="mb-[0.25rem] text-[0.75rem] font-bold text-foreground">
                 {s.title}
               </div>
-              <div
-                style={{
-                  fontSize: "0.7rem",
-                  color: "#64748b",
-                  lineHeight: 1.5,
-                }}
-              >
+              <div className="text-[0.7rem] leading-[1.5] text-muted-foreground">
                 {s.desc}
               </div>
             </div>

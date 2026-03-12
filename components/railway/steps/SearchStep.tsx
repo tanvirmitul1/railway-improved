@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { STATIONS, QUICK_ROUTES } from "@/constants/railway"
 import { inputStyle, labelStyle, btnPrimary } from "@/lib/styles"
 import { useIsMobile } from "@/hooks/useIsMobile"
@@ -17,6 +18,13 @@ interface SearchStepProps {
   onSwap: () => void
 }
 
+const FUNNY_LOADING_MSGS = [
+  "সার্ভার ঘুম থেকে উঠছে...",
+  "চা খাচ্ছে...",
+  "খুঁজছে... ভাই পাবেন না, তাও খুঁজছি",
+  "আপনার ভাগ্য স্ক্যান করা হচ্ছে...",
+]
+
 export function SearchStep({
   from,
   to,
@@ -30,6 +38,14 @@ export function SearchStep({
 }: SearchStepProps) {
   const isMobile = useIsMobile()
   const isSameStation = from === to
+  const [loadingIdx, setLoadingIdx] = useState(0)
+
+  useEffect(() => {
+    if (!searching) { setLoadingIdx(0); return }
+    let i = 0
+    const iv = setInterval(() => { i++; if (i < FUNNY_LOADING_MSGS.length) setLoadingIdx(i) }, 700)
+    return () => clearInterval(iv)
+  }, [searching])
 
   return (
     <div>
@@ -42,10 +58,11 @@ export function SearchStep({
             margin: "0 0 0.4rem",
           }}
         >
-          ট্রেনের টিকেট কাটুন 🎫
+          🎫 টিকেট কাটুন — যদি ভাগ্য থাকে
         </h1>
         <p style={{ color: "#64748b", fontSize: isMobile ? "0.78rem" : "0.85rem", margin: 0 }}>
-          ক্যাপচা নেই। IE নেই। ৪৫ মিনিটের অপেক্ষা নেই। এটা ২০২৫ সাল, বস।
+          ক্যাপচা নেই। IE নেই। ৪৫ মিনিটের যন্ত্রণা নেই।{" "}
+          <span style={{ color: "#f87171" }}>শুধু আপনার ভাগ্য পরীক্ষা।</span>
         </p>
       </div>
 
@@ -180,10 +197,10 @@ export function SearchStep({
               <span style={{ display: "inline-block", animation: "spin 1s linear infinite", fontSize: "1.1rem" }}>
                 🔄
               </span>
-              খোঁজা হচ্ছে... (সার্ভার ডাউন নেই আজ!)
+              {FUNNY_LOADING_MSGS[loadingIdx]}
             </>
           ) : (
-            "🔍 ট্রেন খুঁজুন — সার্ভার আছে, ভয় নেই"
+            "🍀 ভাগ্যের পরীক্ষা দিন"
           )}
         </button>
 

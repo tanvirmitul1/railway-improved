@@ -38,9 +38,12 @@ export function TrainListStep({
           <div style={{ fontSize: "0.72rem", color: "#64748b" }}>
             {date} • {TRAINS.length}টি ট্রেন পাওয়া গেছে (সার্ভার ডাউন ছাড়াই!) 🎉
           </div>
+          <div style={{ fontSize: "0.65rem", color: "#f87171", marginTop: 2 }}>
+            ⚠️ সিট দেখনো হচ্ছে — কিনতে পারলে ভাগ্য! 🙏
+          </div>
         </div>
         <button onClick={onBack} style={btnBack}>
-          ← পরিবর্তন করুন
+          ← আবার ভাবুন
         </button>
       </div>
 
@@ -65,7 +68,7 @@ export function TrainListStep({
           textAlign: "center",
         }}
       >
-        আসল সাইটে এখন সার্ভার ডাউন থাকত। এখানে নেই। আপনি ভাগ্যবান। 🙏
+        👀 দালাল বাদে সিট বাকি আছে? পালে সৌভাগ্য আপনার। শুধু আসল সাইটে এখন সার্ভার ডাউন থাকত। সার্ভার ডাউন না। ফার্কটা বুঝলেন? 🙏
       </div>
     </div>
   )
