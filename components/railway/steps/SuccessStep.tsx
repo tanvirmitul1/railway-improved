@@ -69,12 +69,14 @@ export function SuccessStep({
           color: "#fca5a5",
           lineHeight: 1.6,
         }}
+        className="no-print"
       >
         ⚠️ <strong>গুরুত্বপূর্ণ শর্ত:</strong> আপনার সিটে অন্য কেউ বসে থাকলে আমাদের কিছুই করার নেই। সেটা বাস্তবতা।
       </div>
 
       {/* Ticket card */}
       <div
+        className="printable-ticket"
         style={{
           background:
             "linear-gradient(135deg, rgba(0,106,78,0.25), rgba(0,60,40,0.4))",
@@ -168,6 +170,7 @@ export function SuccessStep({
 
         {/* QR placeholder */}
         <div
+          className="qr-mock"
           style={{
             marginTop: "1rem",
             padding: "0.5rem",
@@ -188,7 +191,7 @@ export function SuccessStep({
             marginTop: "0.25rem",
           }}
         >
-          QR Code • SMS-ও গেছে (মনে হয়)
+          QR Code • Ticket PDF generated
         </div>
       </div>
 
@@ -202,11 +205,27 @@ export function SuccessStep({
         }}
       >
         <button
-          style={{ ...btnPrimary, width: "auto", padding: "0.7rem 1.5rem" }}
+          onClick={() => {
+            const link = document.createElement("a");
+            link.href = "#";
+            link.download = `ticket-${selectedTrain.number}.pdf`;
+            alert("Ticket PDF downloading... (actually just window.print in a real app, but here's your mock download)");
+          }}
+          style={{
+            background: "rgba(255,255,255,0.07)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 12,
+            color: "#fff",
+            padding: "0.7rem 1.5rem",
+            cursor: "pointer",
+            fontSize: "0.9rem",
+            fontWeight: 700,
+          }}
         >
-          📱 SMS পাঠান
+          📥 Download Ticket
         </button>
         <button
+          onClick={() => window.print()}
           style={{
             background: "rgba(255,255,255,0.07)",
             border: "1px solid rgba(255,255,255,0.12)",
